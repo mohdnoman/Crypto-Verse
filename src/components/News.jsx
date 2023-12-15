@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, Typography, Row, Col, Avatar, Card, Spin } from 'antd';
 import moment from 'moment';
 import { useGetCryptoNewsQuery } from '../services/cryptoNewsApi';
@@ -9,9 +9,10 @@ const { Option } = Select;
 const demoImage = 'https://www.bing.com/th?id=OVFT.mpzuVZnv8dwIMRfQGPbOPC&pid=News';
 
 const News = ({ simplified }) => {
+ const [newsCategory, setNewsCategory]=useState('Cryptocurrency')
   // const { data: cryptoNews, error, isLoading } = useGetCryptoNewsQuery({ count: simplified ? 6 : 12 });
   const { data: cryptoNews, error, isLoading } = useGetCryptoNewsQuery();
-  console.log(cryptoNews);
+  
   if (isLoading) {
     return <Spin size="large" />;
   }
@@ -22,6 +23,20 @@ const News = ({ simplified }) => {
 
   return (
     <Row gutter={[24, 24]}>
+      {!simplified &&(
+        <Col span={24}>
+          <Select
+          showSearch
+          className='select-news'
+          placeholder='Select a Crypto'
+          optionFilterProp='children'
+          onChange={(value) => console.log(value)}
+          filterOption={(input, option) => option.children.toLowerCase().indexof(input.toLowerCase()) >= 0}
+          >
+
+          </Select>
+        </Col>
+      )}
       {cryptoNews?.news.map((news, i) => (
         <Col xs={24} sm={12} lg={8} key={i}>
           <Card size="small" hoverable className='news-card'>
@@ -36,7 +51,10 @@ const News = ({ simplified }) => {
                 {news.Description}
               </p>
               <div className='provider-container'>
+                <div>
                 <Avatar src={news.Source || demoImage} alt='' />
+                <Text className='provider-name'>{news.Source}</Text>
+                </div>
                 <Text>{moment(news.PublishedOn).startOf('ss').fromNow()}</Text>
               </div>
             </a>
