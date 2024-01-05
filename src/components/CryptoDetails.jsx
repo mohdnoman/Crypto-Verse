@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import HTMLReactParser from 'html-react-parser';
 import { useParams } from 'react-router-dom';
 import millify from 'millify';
@@ -23,7 +23,7 @@ const CryptoDetails = () => {
     const { data, isFetching } = useGetCryptoDetailsQuery(coinId);
     const { data: coinHistory } = useGetCryptoHistoryQuery({ coinId, timeperiod });
     const cryptoDetails = data?.data?.coin;
-    const [volume, setVolume] = useState({timeperiod});
+    // const [volume, setVolume] = useState({timeperiod});
 
     console.log("Crypto history data:", coinHistory);
     if (isFetching) return <Loader />;
